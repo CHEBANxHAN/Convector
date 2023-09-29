@@ -6,9 +6,10 @@ from random import*
 def go_to_list8():
     try:
         name = entry.get()
+        nameX = int(entryX.get())
+        nameY = int(entryY.get())
         img = Image.open(name)
-        WIDTH, HEIGHT = img.size
-        img = img.resize((WIDTH // 8, HEIGHT))
+        img = img.resize((nameX // 8, nameY))
         img = img.convert('L')
         data = list(img.getdata())
         d = 0
@@ -20,7 +21,7 @@ def go_to_list8():
                 i = "0x00"
             conv.append(i)
             d += 1
-        data = [conv[offset:offset+WIDTH] for offset in range(0, WIDTH*HEIGHT, WIDTH)]
+        data = [conv[offset:offset+nameX] for offset in range(0, nameX*nameY, nameX)]
         f = open(f"data{randint(0, 1000)}.txt", "w")
         for row in data:
             t = ', '.join('{:3}'.format(value) for value in row)
@@ -55,13 +56,25 @@ tm.pack()
 textn = Label(root, text="", font=("Microsoft Yahei", 14))
 textn.pack(side=RIGHT)
 
+textf = Label(root, text="File name", font=("Microsoft Yahei", 14))
+textf.pack(anchor=NW, padx=6, pady=6)
 entry = Entry()
 entry.pack(anchor=NW, padx=6, pady=6)
 
+textx = Label(root, text="Width", font=("Microsoft Yahei", 14))
+textx.pack(anchor=NW, padx=6, pady=6)
+entryX = Entry()
+entryX.pack(anchor=NW, padx=6, pady=6)
+
+texty = Label(root, text="Height", font=("Microsoft Yahei", 14))
+texty.pack(anchor=NW, padx=6, pady=6)
+entryY = Entry()
+entryY.pack(anchor=NW, padx=6, pady=6)
+
 bt_sev = Button(root, text="Convect", padx="5", pady="3", command=go_to_list8)
-bt_sev.pack(side=BOTTOM)
+bt_sev.pack(side=RIGHT)
 
 bt_sev1 = Button(root, text="Delete", padx="5", pady="3", command=delete)
-bt_sev1.pack(side=BOTTOM)
+bt_sev1.pack(side=RIGHT)
 
 root.mainloop()
