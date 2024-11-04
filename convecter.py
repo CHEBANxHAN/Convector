@@ -8,18 +8,29 @@ def go_to_list8():
         name = entry.get()
         nameX = int(entryX.get())
         nameY = int(entryY.get())
-        img = Image.open(name)
+        img = Image.open(name).convert('RGB')
         img = img.resize((nameX // 8, nameY))
-        img = img.convert('L')
+        #img = img.convert('L')
         data = list(img.getdata())
         d = 0
         conv = []
-        for i in data:
-            if i > 127:
-                i = "0xff"
-            else:
-                i = "0x00"
-            conv.append(i)
+        a = []
+        b = []
+        for j in data:
+            for i in j:
+                if i < 16:
+                    x = str(hex(i))
+                    x = x[:2] + "0" + x[2:]
+                else:
+                    x = hex(i)
+                a.append(x)
+            for n in a:
+                b.append(n[2:])
+            a.clear()
+            x = ''.join(b)
+            y = "0x" + x
+            b.clear()
+            conv.append(y)
             d += 1
         data = [conv[offset:offset+nameX] for offset in range(0, nameX*nameY, nameX)]
         f = open(f"data{randint(0, 1000)}.txt", "w")
